@@ -14,6 +14,7 @@ import pandas as pd
 import tensorflow as tf
 import sklearn
 from sklearn.preprocessing import OneHotEncoder
+from deep_translator import GoogleTranslator
 
 
 class Dataset:
