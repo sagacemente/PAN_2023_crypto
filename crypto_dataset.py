@@ -99,7 +99,8 @@ class Dataset:
       self.test_df = self.df[last_idx_train:]
       self.test_df.columns = ["text", "labels"]
       return self.train_df , self.test_df
-   def generate_cross_val_sets(self, fold_nr):
+    
+    def generate_cross_val_sets(self, fold_nr):
       self.train=[]
       self.val=[]
       # Percentage start and end of validation subset within full_train_ds.
