@@ -8,6 +8,7 @@ Original file is located at
 """
 
 import os
+import shutil
 import json
 import pandas as pd
 import tensorflow as tf
