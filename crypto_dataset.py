@@ -114,7 +114,29 @@ class Dataset:
       val_percentage_start-=val_percentage_size
       val_percentage_end-=val_percentage_size
         
+    def clean_samples(self, input_data):
+      #tag_url = tf.strings.regex_replace(input_data,'http\S+', 'url')
+      #output_data = tf.strings.regex_replace(tag_url,'</documents>', '')
+      output_data = input_data
+      return output_data #.numpy().decode("utf-8")
 
+    def chunkstring(self, string, length):
+      res = list((string[0+i:length+i] for i in range(0, len(string), length)))
+      return res
+
+    def enhance_one_sample(self, sample, TARGET='it', return_both=True):  
+      preprocessed_text = clean_samples(sample)
+
+      #chunk to avoid character limits  
+      TOBETRANS = chunkstring(preprocessed_text, 4999)
+      translated_it = GoogleTranslator(source='en', target=TARGET).translate_batch(TOBETRANS)
+      reversed_trans = GoogleTranslator(source=TARGET, target='en').translate_batch(translated_it)
+      merged_chunks =''.join(reversed_trans)
+      enhanced_sample = preprocessed_text+merged_chunks
+      if return_both == False:
+        enhanced_sample = merged_chunks
+      return enhanced_sample
+    
     def augment_dataset(self, SUBTASKS=['1','2'], TARGET_LANG=['it', 'de']):
       for lang in TARGET_LANG:
         print(lang)
