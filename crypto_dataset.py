@@ -165,7 +165,7 @@ class Dataset:
               ##### AUGMENTATION #####
               augmented_texts = []
               for tw in texts:
-                if len(tw) > 3 and c<3:
+                if len(tw) > 3:
                   augmented = self.enhance_one_sample(tw, TARGET='it')
                   #print('--> tw\n', tw)
                   #print('--> augmented\n', augmented)
