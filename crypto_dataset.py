@@ -125,10 +125,10 @@ class Dataset:
       return res
 
     def enhance_one_sample(self, sample, TARGET='it', return_both=True):  
-      preprocessed_text = clean_samples(sample)
+      preprocessed_text = self.clean_samples(sample)
 
       #chunk to avoid character limits  
-      TOBETRANS = chunkstring(preprocessed_text, 4999)
+      TOBETRANS = self.chunkstring(preprocessed_text, 4999)
       translated_it = GoogleTranslator(source='en', target=TARGET).translate_batch(TOBETRANS)
       reversed_trans = GoogleTranslator(source=TARGET, target='en').translate_batch(translated_it)
       merged_chunks =''.join(reversed_trans)
