@@ -83,9 +83,6 @@ class Dataset:
         # SHUFLLE
         #self.train_set = self.train_set.shuffle(len(self.train_set),seed=1, reshuffle_each_iteration=False)
         #self.test_set =  self.test_set.shuffle(len(self.test_set),seed=1, reshuffle_each_iteration=False)
-    
-    # def clean_df(self, clean):
-    #   return []
 
     def get_train_test_df(self, train_size=0.8):
       self.df_texts = pd.DataFrame.from_dict(self.id_texts_dict, orient='index', columns=['text'])
@@ -115,7 +112,62 @@ class Dataset:
         val[i] = val[i].take(int(full_train_ds_size*val_percentage_size/100))
       val_percentage_start-=val_percentage_size
       val_percentage_end-=val_percentage_size
-            
+        
+
+    def augment_dataset(self, SUBTASKS=['1','2'], TARGET_LANG=['it', 'de']):
+      for lang in TARGET_LANG:
+        print(lang)
+        language = '-augmented-' + lang 
+        for subtask in SUBTASKS:      
+          subtask = 'subtask' + subtask
+          print(subtask)
+          #create required folders
+          train_truth_path = os.getcwd() + '/pan23-profiling-cryptocurrency-influencers/' + subtask + '/train_truth.json'
+          train_texts_path_augmented = os.getcwd() + '/pan23-profiling-cryptocurrency-influencers'+ language + '/'  + subtask 
+          train_truth_path_augmented = os.getcwd() + '/pan23-profiling-cryptocurrency-influencers' + language + '/' + subtask + '/train_truth.json'
+          if not os.path.exists(train_texts_path_augmented):
+            os.makedirs(train_texts_path_augmented)
+          if os.path.exists(train_texts_path_augmented):
+            shutil.copyfile(train_truth_path, train_truth_path_augmented)
+          train_texts_path = os.getcwd() + '/pan23-profiling-cryptocurrency-influencers/'  + subtask  + '/train_text.json'
+          f = open(train_texts_path, "r")
+          LIST_SAMPLES = []
+          c = 0
+          for idx, line in enumerate(f):
+              print('idx', idx+1)
+              line = json.loads(line)            
+              texts = line['texts']
+              texts = [i['text'] for i in texts]    
+              ##### AUGMENTATION #####
+              augmented_texts = []
+              for tw in texts:
+                if len(tw) > 3 and c<3:
+                  augmented = enhance_one_sample(tw, TARGET='it')
+                  #print('--> tw\n', tw)
+                  #print('--> augmented\n', augmented)
+                  #print('######')
+                  #c +=1
+                else:
+                  print('!!!!this ont be augmented !!!! \n', tw)
+                  augmented = tw
+                augmented_texts.append(augmented)
+              d_augmented_texts = [{'text': i} for i in augmented_texts]
+              line['texts'] = d_augmented_texts
+              LIST_SAMPLES.append(line)
+              c +=1
+          # write train file augmtented
+          PATH_AUGM_TEST_FILE = os.getcwd() + '/pan23-profiling-cryptocurrency-influencers' + language  +'/' + subtask + '/train_text.json' 
+          NEW_FILE_NAME = os.getcwd() + '/pan23-profiling-cryptocurrency-influencers' + language
+          with open(PATH_AUGM_TEST_FILE, 'w') as fp:
+              fp.write('\n'.join(json.dumps(i) for i in LIST_SAMPLES) +
+                      '\n')
+          #create zip file    
+          name_zip = os.getcwd() + '/' + 'pan23-profiling-cryptocurrency-influencers' + language
+          print('name_zip \n', name_zip)
+          shutil.make_archive(name_zip,'zip','','pan23-profiling-cryptocurrency-influencers' + language)
+          print('#### Dataset Created for ', lang, subtask)
+        
+        
     def build_ds(self,batch_size, left_size=0.8):
       self.fetch_ds_files()
       self.organize_ds_folders()
