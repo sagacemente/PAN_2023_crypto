@@ -99,7 +99,24 @@ class Dataset:
       self.test_df = self.df[last_idx_train:]
       self.test_df.columns = ["text", "labels"]
       return self.train_df , self.test_df
+   def generate_cross_val_sets(self, fold_nr):
+        self.train=[]
+        self.val=[]
+        # Percentage start and end of validation subset within full_train_ds.
+        val_percentage_end=100
+        val_percentage_size=100/ fold_nr  #20
+        val_percentage_start= val_percentage_end - val_percentage_size #80
+        full_train_ds_size = len(self.ds)
+        for i in range(0,fold_nr):
+          train.append(self.ds.take(int(self.ds*val_percentage_start/100)))
+          train[i] = train[i].concatenate(self.ds.skip(int(full_train_ds_size*val_percentage_end/100)))
 
+          val.append(self.ds.skip(int(full_train_ds_size*val_percentage_start/100)))
+          val[i] = val[i].take(int(full_train_ds_size*val_percentage_size/100))
+
+          val_percentage_start-=val_percentage_size
+          val_percentage_end-=val_percentage_size
+            
     def build_ds(self,batch_size, left_size=0.8):
       self.fetch_ds_files()
       self.organize_ds_folders()
