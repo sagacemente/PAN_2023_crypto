@@ -110,7 +110,7 @@ class Dataset:
       full_train_ds_size = len(self.ds)
       
       for i in range(0,fold_nr):
-        self.train.append(self.ds.take(int(self.ds*val_percentage_start/100)))
+        self.train.append(self.ds.take(int(full_train_ds_size*val_percentage_start/100)))
         self.train[i] = self.train[i].concatenate(self.ds.skip(int(full_train_ds_size*val_percentage_end/100)))
         
         self.val.append(self.ds.skip(int(full_train_ds_size*val_percentage_start/100)))
