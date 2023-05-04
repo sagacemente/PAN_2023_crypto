@@ -26,8 +26,9 @@ class Dataset:
         
     def fetch_ds_files(self):
         if 'augmented' in self.url:
-            self.NAME = 'pan23-profiling-cryptocurrency-influencers-augmented-' + self.language + '.zip'
-            train_set_archive = tf.keras.utils.get_file(self.NAME,self.url,
+            self.NAME = 'pan23-profiling-cryptocurrency-influencers-augmented-' + self.language
+            self.NAME_ZIP = 'pan23-profiling-cryptocurrency-influencers-augmented-' + self.language + '.zip'
+            train_set_archive = tf.keras.utils.get_file(self.NAME_ZIP,self.url,
                                             extract=True, archive_format='zip',cache_dir='.',
                                             cache_subdir='')      
         else:
