@@ -56,7 +56,7 @@ class Dataset:
             line = json.loads(line)            
             texts = line['texts']
             texts = [i['text'] for i in texts]
-            texts = '<NEWTW>'.join(texts)
+            texts = ' '.join(texts)
             user_id = line['twitter user id']
             self.id_texts_dict[user_id] = texts
             #create object with {user_id : [tweet_ids_list1, tweet_ids_list2]}
