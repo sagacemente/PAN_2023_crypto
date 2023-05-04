@@ -19,7 +19,7 @@ from deep_translator import GoogleTranslator
 
 class Dataset:
 
-    def __init__(self, url:str, n_subtask:int, language='ja'):
+    def __init__(self, url:str, n_subtask:int, language='it'):
         self.url = url
         self.language = language
         self.subtask = 'subtask' + str(n_subtask)
