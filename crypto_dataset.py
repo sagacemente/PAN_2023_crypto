@@ -143,7 +143,7 @@ class Dataset:
       TOBETRANS = self.chunkstring(preprocessed_text, 4999)
       translated_it = GoogleTranslator(source='en', target=TARGET).translate_batch(TOBETRANS)
       reversed_trans = GoogleTranslator(source=TARGET, target='en').translate_batch(translated_it)
-      merged_chunks =''.join(reversed_trans)
+      merged_chunks =' '.join(reversed_trans)
       enhanced_sample = preprocessed_text+merged_chunks
       if return_both == False:
         enhanced_sample = merged_chunks
