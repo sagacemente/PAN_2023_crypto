@@ -19,11 +19,18 @@ from deep_translator import GoogleTranslator
 
 class Dataset:
 
-    def __init__(self, url:str, n_subtask:int):
+    def __init__(self, url:str, n_subtask:int, language='ja'):
         self.url = url
+        self.language = language
         self.subtask = 'subtask' + str(n_subtask)
         
     def fetch_ds_files(self):
+        if 'augmented' in self.url:
+           #NAME = 'pan23-profiling-cryptocurrency-influencers-augmented-' + self.language 
+           train_set_archive = tf.keras.utils.get_file('pan23-profiling-cryptocurrency-influencers-augmented-ja.zip',self.url,
+                                            extract=True, archive_format='zip',cache_dir='.',
+                                            cache_subdir='')      
+        else:
         train_set_archive = tf.keras.utils.get_file('pan23-profiling-cryptocurrency-influencers.zip',self.url,
                                             extract=True, archive_format='zip',cache_dir='.',
                                             cache_subdir='')
