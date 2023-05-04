@@ -37,7 +37,7 @@ class Dataset:
 
     def organize_ds_folders(self):
         #############   LABELS TRUTH  
-        train_truth_file_path = os.getcwd() + '/pan23-profiling-cryptocurrency-influencers-augmented-de/' + self.subtask + '/train_truth.json'
+        train_truth_file_path = os.getcwd() + '/pan23-profiling-cryptocurrency-influencers/' + self.subtask + '/train_truth.json'
         f = open(train_truth_file_path, "r")
         self.id_label_dict = {}
         for line in f:
@@ -48,7 +48,7 @@ class Dataset:
         print('id_label_dict',self.id_label_dict)
 
         #############  TEXTS 
-        train_texts_path = os.getcwd() + '/pan23-profiling-cryptocurrency-influencers-augmented-de/'  + self.subtask  + '/train_text.json'
+        train_texts_path = os.getcwd() + '/pan23-profiling-cryptocurrency-influencers/'  + self.subtask  + '/train_text.json'
         f = open(train_texts_path, "r")
         self.id_texts_dict = {}
         self.tweet_ids_dict = {}
