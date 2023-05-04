@@ -177,7 +177,7 @@ class Dataset:
               augmented_texts = []
               for tw in texts:
                 if len(tw) > 3:
-                  augmented = self.enhance_one_sample(tw, TARGET='it')
+                  augmented = self.enhance_one_sample(tw, TARGET=lang)
                   #print('--> tw\n', tw)
                   #print('--> augmented\n', augmented)
                   #print('######')
