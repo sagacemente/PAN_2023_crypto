@@ -102,18 +102,22 @@ class Dataset:
     def generate_cross_val_sets(self, fold_nr):
       self.train=[]
       self.val=[]
+      
       # Percentage start and end of validation subset within full_train_ds.
       val_percentage_end=100
-      val_percentage_size=100/ fold_nr  #20
+      val_percentage_size=int(100/ fold_nr)  #20
       val_percentage_start= val_percentage_end - val_percentage_size #80
       full_train_ds_size = len(self.ds)
+      
       for i in range(0,fold_nr):
-        train.append(self.ds.take(int(self.ds*val_percentage_start/100)))
-        train[i] = train[i].concatenate(self.ds.skip(int(full_train_ds_size*val_percentage_end/100)))
-        val.append(self.ds.skip(int(full_train_ds_size*val_percentage_start/100)))
-        val[i] = val[i].take(int(full_train_ds_size*val_percentage_size/100))
-      val_percentage_start-=val_percentage_size
-      val_percentage_end-=val_percentage_size
+        self.train.append(self.ds.take(int(self.ds*val_percentage_start/100)))
+        self.train[i] = self.train[i].concatenate(self.ds.skip(int(full_train_ds_size*val_percentage_end/100)))
+        
+        self.val.append(self.ds.skip(int(full_train_ds_size*val_percentage_start/100)))
+        self.val[i] = self.val[i].take(int(full_train_ds_size*val_percentage_size/100))
+        
+        val_percentage_start-=val_percentage_size
+        val_percentage_end-=val_percentage_size
         
     def clean_samples(self, input_data):
       #tag_url = tf.strings.regex_replace(input_data,'http\S+', 'url')
