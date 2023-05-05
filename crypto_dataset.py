@@ -32,6 +32,7 @@ class Dataset:
                                             extract=True, archive_format='zip',cache_dir='.',
                                             cache_subdir='')      
         else:
+            self.NAME = 'pan23-profiling-cryptocurrency-influencers'
             train_set_archive = tf.keras.utils.get_file('pan23-profiling-cryptocurrency-influencers.zip',self.url,
                                             extract=True, archive_format='zip',cache_dir='.',
                                             cache_subdir='')
