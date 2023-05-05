@@ -54,7 +54,7 @@ class Simulator:
       self.setup_shallow()
       print("\nSetup for shallow model completed.")
     
-    if self.model == "roberta":
+    if self.model == 'roberta' or 'electra' or 'xlnet':
       self.setup_transformer()
       print("\nSetup for Roberta completed.")
 
@@ -73,7 +73,7 @@ class Simulator:
   def run(self):
     if self.model == "cnn":
       self.run_cnn()
-    elif self.model == "roberta":
+    elif self.model == 'roberta' or 'electra' or 'xlnet':
       self.run_roberta()
 
   def run_cnn(self):
@@ -178,11 +178,14 @@ class Simulator:
       self.df_test_fold = pd.DataFrame(data=[X_test_fold_array, Y_test_fold_array]).T
       #print('df_test_fold',self.df_test_fold)
       
-      tokenizer =  {"electra":'google/electra-base-discriminator'}
+      tokenizer_dict =  {"electra":'google/electra-base-discriminator',
+                   "roberta":'roberta-base',
+                   "xlnet":'xlnet-base-cased'}
+      tokenizer = tokenizer_dict[self.model]
       
       epochs_accuracy=[]
-      model = ClassificationModel("electra", 
-                                      'google/electra-base-discriminator', 
+      model = ClassificationModel(self.model, 
+                                      tokenizer, 
                                       args = model_args, 
                                       num_labels=self.num_labels, 
                                       use_cuda=cuda_available)
