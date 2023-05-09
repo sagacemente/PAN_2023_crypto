@@ -163,9 +163,10 @@ class Simulator:
                                     no_cache=True)
 
     runs_accuracy = []
-    
-    #kf = StratifiedKFold(n_splits = self.num_fold, shuffle = True, random_state = 2)
-    kf = KFold(n_splits = self.num_fold, shuffle = True, random_state = 2)
+    best_accuracy = 0.0
+    self.best_model = ''
+    kf = StratifiedKFold(n_splits = self.num_fold, shuffle = True, random_state = 2)
+    #kf = KFold(n_splits = self.num_fold, shuffle = True, random_state = 2)
     self.df_all = pd.concat([self.ds.train_df,self.ds.test_df],axis=0)
     inputs = self.df_all['text'].values
     targets = self.df_all['labels'].values
@@ -210,6 +211,9 @@ class Simulator:
         macrof1 = result['acc']
         print("Macro F1 on test set is:",macrof1,"\n\n")
         epochs_accuracy.append(macrof1)
+        if macrof1 >= best_accuracy:
+            best_accuracy = macrof1 
+            self.best_model = model
 
       print('Accuracy Over epochs',epochs_accuracy)
       runs_accuracy.append(max(epochs_accuracy))   
@@ -227,3 +231,4 @@ class Simulator:
     median = np.median(runs_accuracy)
     print("RoBERTa MAX Accuracy Score on Test set -> ",final_result)
     print("RoBERTa median Accuracy Score on Test set -> ",median)
+    return self.best_model
