@@ -163,7 +163,8 @@ class Simulator:
 
     runs_accuracy = []
     
-    kf = StratifiedKFold(n_splits = self.num_fold, shuffle = True, random_state = 2)
+    #kf = StratifiedKFold(n_splits = self.num_fold, shuffle = True, random_state = 2)
+    kf = KFold(n_splits = self.num_fold, shuffle = True, random_state = 2)
     self.df_all = pd.concat([self.ds.train_df,self.ds.test_df],axis=0)
     inputs = self.df_all['text'].values
     targets = self.df_all['labels'].values
