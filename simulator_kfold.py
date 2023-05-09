@@ -189,7 +189,8 @@ class Simulator:
                                       tokenizer, 
                                       args = model_args, 
                                       num_labels=self.num_labels, 
-                                      use_cuda=cuda_available)
+                                      use_cuda=cuda_available,
+                                      )
       for epoch in range (0,self.nr_epochs):
         print("\nEPOCH NUMBER: ", epoch)
         # train model
@@ -209,7 +210,7 @@ class Simulator:
         print("Macro F1 on test set is:",macrof1,"\n\n")
         epochs_accuracy.append(macrof1)
 
-      print(epochs_accuracy)
+      print('Accuracy Over epochs',epochs_accuracy)
       runs_accuracy.append(max(epochs_accuracy))   
   
 
