@@ -159,7 +159,7 @@ class Simulator:
                                     use_multiprocessing = True,
                                     train_batch_size = 16,
                                     eval_batch_size = 1,
-                                    no_save=True, 
+                                    no_save=False, 
                                     no_cache=True)
 
     runs_accuracy = []
