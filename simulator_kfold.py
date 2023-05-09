@@ -69,7 +69,7 @@ class Simulator:
     #self.train_df, self.test_df = self.ds.get_train_test_df()
     #added some parameters
     #self.kf = KFold(n_splits = 5, shuffle = True, random_state = 2)
-    print('Transformer Setup completed)
+    print('Transformer Setup completed')
 
   def run(self):
     if self.model == "cnn":
