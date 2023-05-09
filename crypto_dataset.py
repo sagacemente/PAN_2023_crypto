@@ -99,7 +99,11 @@ class Dataset:
 
     def get_train_test_df(self, train_size=0.8):
       self.df_texts = pd.DataFrame.from_dict(self.id_texts_dict, orient='index', columns=['text'])
-      self.df_labels = pd.DataFrame.from_dict(self.id_label_dict, orient='index', columns=['label'])      
+      self.df_labels = pd.DataFrame.from_dict(self.id_label_dict, orient='index', columns=['label'])
+      self.a = pd.DataFrame.from_dict(self.ds.id_label_dict, orient='index')
+      self.a['label'] = pd.Categorical(self.a[0]).codes
+      self.qqq = self.a.drop_duplicates()
+      self.LABEL_DICT = dict(zip(self.qqq[0], self.qqq["label"]))
       self.df_labels['label'] = pd.Categorical(self.df_labels['label']).codes
       self.df = pd.concat([self.df_texts, self.df_labels], axis=1)  
       #self.df = self.df.sample(frac=1) #shuffle Dataset 
