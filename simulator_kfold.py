@@ -153,7 +153,7 @@ class Simulator:
     self.metric = f1_macro
     cuda_available = torch.cuda.is_available()
 
-    model_args = ClassificationArgs(num_train_epochs=2, 
+    model_args = ClassificationArgs(num_train_epochs=1, 
                                     overwrite_output_dir=True,
                                     manual_seed = 4,
                                     use_multiprocessing = True,
