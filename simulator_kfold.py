@@ -165,55 +165,55 @@ class Simulator:
     runs_accuracy = []
     best_accuracy = 0.0
     self.best_model = ''
-    kf = StratifiedKFold(n_splits = self.num_fold, shuffle = True, random_state = 2)
+    #kf = StratifiedKFold(n_splits = self.num_fold, shuffle = True, random_state = 2)
     #kf = KFold(n_splits = self.num_fold, shuffle = True, random_state = 2)
     self.df_all = pd.concat([self.ds.train_df,self.ds.test_df],axis=0)
-    inputs = self.df_all['text'].values
-    targets = self.df_all['labels'].values
+    #inputs = self.df_all['text'].values
+    #targets = self.df_all['labels'].values
     c = 0
-    for train, test in kf.split(inputs, targets):    
-      c+= 1
-      print('FOLD NUM', c)
-      X_train_fold_array, Y_train_fold_array = inputs[train], targets[train]
-      X_test_fold_array, Y_test_fold_array = inputs[test], targets[test]
-      #print(type(X_train_fold_array), X_train_fold_array.shape)
-      self.df_train_fold = pd.DataFrame([X_train_fold_array, Y_train_fold_array]).T
-      self.df_test_fold = pd.DataFrame(data=[X_test_fold_array, Y_test_fold_array]).T
-      #print('df_test_fold',self.df_test_fold)
-      
-      tokenizer_dict =  {"electra":'google/electra-base-discriminator',
-                   "roberta":'roberta-base',
-                   "xlnet":'xlnet-base-cased'}
-      tokenizer = tokenizer_dict[self.model]
-      
-      epochs_accuracy=[]
-      model = ClassificationModel(self.model, 
-                                      tokenizer, 
-                                      args = model_args, 
-                                      num_labels=self.num_labels, 
-                                      use_cuda=cuda_available,
-                                      )
-      for epoch in range (0,self.nr_epochs):
-        print("\nEPOCH NUMBER: ", epoch)
-        # train model
-        print("\nNOW TRAIN THE MODEL.")
-        model.train_model(self.df_train_fold,
-                          show_running_loss=True,
-                          acc=self.metric,
-                          verbose=False)
-        print("\nNOW EVALUATE THE TEST DF.")
-        # Evaluate the model
-        result, model_outputs, wrong_predictions = model.eval_model(self.df_test_fold,
-                                                                    acc=self.metric
-                                                                    )
-        # Results on test set.
-        print(result)
-        macrof1 = result['acc']
-        print("Macro F1 on test set is:",macrof1,"\n\n")
-        epochs_accuracy.append(macrof1)
-        if macrof1 >= best_accuracy:
-            best_accuracy = macrof1 
-            self.best_model = model
+    #for train, test in kf.split(inputs, targets):    
+    c+= 1
+    #print('FOLD NUM', c)
+    #X_train_fold_array, Y_train_fold_array = inputs[train], targets[train]
+    #X_test_fold_array, Y_test_fold_array = inputs[test], targets[test]
+    #print(type(X_train_fold_array), X_train_fold_array.shape)
+    #self.df_train_fold = pd.DataFrame([X_train_fold_array, Y_train_fold_array]).T
+    #self.df_test_fold = pd.DataFrame(data=[X_test_fold_array, Y_test_fold_array]).T
+    #print('df_test_fold',self.df_test_fold)
+
+    tokenizer_dict =  {"electra":'google/electra-base-discriminator',
+               "roberta":'roberta-base',
+               "xlnet":'xlnet-base-cased'}
+    tokenizer = tokenizer_dict[self.model]
+
+    epochs_accuracy=[]
+    model = ClassificationModel(self.model, 
+                                  tokenizer, 
+                                  args = model_args, 
+                                  num_labels=self.num_labels, 
+                                  use_cuda=cuda_available,
+                                  )
+    for epoch in range (0,self.nr_epochs):
+      print("\nEPOCH NUMBER: ", epoch)
+      # train model
+      print("\nNOW TRAIN THE MODEL.")
+      model.train_model(self.df_all,
+                      show_running_loss=True,
+                      acc=self.metric,
+                      verbose=False)
+      print("\nNOW EVALUATE THE TEST DF.")
+      # Evaluate the model
+      result, model_outputs, wrong_predictions = model.eval_model(self.df_all,
+                                                                acc=self.metric
+                                                                )
+      # Results on test set.
+      print(result)
+      macrof1 = result['acc']
+      print("Macro F1 on test set is:",macrof1,"\n\n")
+      epochs_accuracy.append(macrof1)
+      #    if macrof1 >= best_accuracy:
+      #        best_accuracy = macrof1 
+      #        self.best_model = model
 
       print('Accuracy Over epochs',epochs_accuracy)
       runs_accuracy.append(max(epochs_accuracy))   
