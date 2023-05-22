@@ -21,6 +21,9 @@ from sklearn.preprocessing import OneHotEncoder
 from urllib import request
 from simpletransformers.classification import ClassificationModel, ClassificationArgs
 from sklearn.model_selection import KFold, StratifiedKFold
+from google.colab import files
+import shutil
+import zipfile
 
 # Import class Vectorizer
 module_url = f"https://raw.githubusercontent.com/sagacemente/PAN_2023_crypto/main/crypto_vectorzer.py"
@@ -231,4 +234,22 @@ class Simulator:
     median = np.median(runs_accuracy)
     print("RoBERTa MAX Accuracy Score on Test set -> ",final_result)
     print("RoBERTa median Accuracy Score on Test set -> ",median)
-    return self.best_model
+
+  def zip_and_download_folder(self, folder_path, zip_filename):
+      # Zip the folder
+      shutil.make_archive(zip_filename, 'zip', folder_path)
+
+      # Set the appropriate headers for downloading the zip file
+      headers = {
+            'Content-Type': 'application/zip',
+            'Content-Disposition': f'attachment; filename={zip_filename}.zip'
+        }
+
+      # Read the zipped file
+      with open(f'{zip_filename}.zip', 'rb') as file:
+          zipped_content = file.read()
+      from google.colab import files
+
+  def download_file(self, file_path):
+      # Download the file
+      files.download(file_path)
