@@ -23,6 +23,7 @@ class Dataset:
         self.url = url
         self.language = language
         self.subtask = 'subtask' + str(n_subtask)
+        self.id_label_dict = {}
         
     def fetch_ds_files(self):
         if 'augmented' in self.url:
@@ -42,7 +43,6 @@ class Dataset:
         train_truth_file_path = os.getcwd() + '/' + self.NAME + '/' + self.subtask + '/train_truth.json'
         #train_truth_file_path = os.getcwd() + '/pan23-profiling-cryptocurrency-influencers/' + self.subtask + '/train_truth.json'
         f = open(train_truth_file_path, "r")
-        self.id_label_dict = {}
         for line in f:
             line = json.loads(line)
             label = line['class']
