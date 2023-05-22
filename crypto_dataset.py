@@ -86,8 +86,8 @@ class Dataset:
         X = self.df_texts
         self.nlabels = int(len(set(self.id_label_dict.values())))
         Y = self.df_labels.values.reshape(-1,1,self.nlabels)
-        self.ds = tf.data.Dataset.from_tensor_slices((X, Y))
-        self.train_set, self.test_set = tf.keras.utils.split_dataset(self.ds, left_size=left_size)
+        self.dataset_tf = tf.data.Dataset.from_tensor_slices((X, Y))
+        self.train_set, self.test_set = tf.keras.utils.split_dataset(self.dataset_tf, left_size=left_size)
         print('num labels',  self.nlabels)
         # for row in self.train_set.take(3):
         #   print(row)
@@ -100,7 +100,7 @@ class Dataset:
     def get_train_test_df(self, train_size=0.8):
       self.df_texts = pd.DataFrame.from_dict(self.id_texts_dict, orient='index', columns=['text'])
       self.df_labels = pd.DataFrame.from_dict(self.id_label_dict, orient='index', columns=['label'])
-      self.a = pd.DataFrame.from_dict(self.ds.id_label_dict, orient='index')
+      self.a = pd.DataFrame.from_dict(self.id_label_dict, orient='index')
       self.a['label'] = pd.Categorical(self.a[0]).codes
       self.qqq = self.a.drop_duplicates()
       self.LABEL_DICT = dict(zip(self.qqq[0], self.qqq["label"]))
